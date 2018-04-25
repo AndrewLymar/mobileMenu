@@ -44,29 +44,27 @@ function mobileMenu(menuClassName, menuIconClassName, mobileResolution, isMenuFi
 		scrollPos = $(document).scrollTop();
 		if (isMenuFixed && documentWidth > mobileResolution) {
 			fixedMenu();
-			$menuLinks.each(function () {
-				var currLink = $(this);
-				var refElement = $(currLink.attr("href"));
-				if (refElement.position().top <= scrollPos + offset && refElement.position().top + refElement.height() > scrollPos) {
-					$menuLinks.removeClass("active");
-					currLink.addClass("active");
-				} else {
-					currLink.removeClass("active");
-				}
-			});
 		}
+		$menuLinks.each(function () {
+			var currLink = $(this);
+			var refElement = $(currLink.attr("href"));
+			if (refElement.position().top <= scrollPos + offset && refElement.position().top + refElement.height() > scrollPos) {
+				$menuLinks.removeClass("active");
+				currLink.addClass("active");
+			} else {
+				currLink.removeClass("active");
+			}
+		});
 	}
 
 	function scrollTo(event) {
 		var target = this.hash;
 		var $target = $(target);
-		if (scrollPos > 50) {
+		if (scrollPos > 50 || documentWidth < mobileResolution) {
 			offset = $menu.outerHeight();
 		} else {
 			offset = $menu.outerHeight() * 2;
 		}
-
-		console.log(offset);
 		event.preventDefault();
 		$menuLinks.each(function () {
 			$(this).removeClass("active");
@@ -79,7 +77,6 @@ function mobileMenu(menuClassName, menuIconClassName, mobileResolution, isMenuFi
 	}
 
 	function fixedMenu() {
-		offset = $menu.outerHeight();
 		if (scrollPos > 50) {
 			$menu.addClass("fixed-menu");
 		} else {

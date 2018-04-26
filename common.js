@@ -1,1 +1,1 @@
-mobileMenu(".menu", ".menu-icon", 768, true);
+mobileMenu(".menu", ".menu-icon", ".menu-icon-close", 768, true, 50);

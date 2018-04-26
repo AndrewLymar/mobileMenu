@@ -1,8 +1,9 @@
-function mobileMenu(menuClassName, menuIconClassName, mobileResolution, isMenuFixed) {
+function mobileMenu(menuClassName, menuIconClassName, closeIconClassName, mobileResolution, isMenuSticky, offsetToSticky) {
 	var $menu = $(menuClassName);
 	var $menuList = $menu.find("ul");
 	var $menuLinks = $menu.find("a");
 	var $menuIcon = $(menuIconClassName);
+	var $closeIcon = $(closeIconClassName);
 	var documentWidth = $(document).width();
 	var menuIsOpened = false;
 	var offset;
@@ -34,6 +35,16 @@ function mobileMenu(menuClassName, menuIconClassName, mobileResolution, isMenuFi
 			hideMenu();
 		}
 	});
+
+	if ($closeIcon) {
+		$closeIcon.on("click", function () {
+			if (menuIsOpened) {
+				hideMenu();
+			}
+		});
+	}
+
+
 	$menuLinks.on("click", function () {
 		if (documentWidth <= mobileResolution) {
 			hideMenu();
@@ -42,7 +53,7 @@ function mobileMenu(menuClassName, menuIconClassName, mobileResolution, isMenuFi
 
 	function onScroll(event) {
 		scrollPos = $(document).scrollTop();
-		if (isMenuFixed && documentWidth > mobileResolution) {
+		if (isMenuSticky && documentWidth > mobileResolution) {
 			fixedMenu();
 		}
 		$menuLinks.each(function () {
@@ -60,7 +71,7 @@ function mobileMenu(menuClassName, menuIconClassName, mobileResolution, isMenuFi
 	function scrollTo(event) {
 		var target = this.hash;
 		var $target = $(target);
-		if (scrollPos > 50 || documentWidth < mobileResolution) {
+		if (scrollPos > offsetToSticky || documentWidth < mobileResolution) {
 			offset = $menu.outerHeight();
 		} else {
 			offset = $menu.outerHeight() * 2;
@@ -77,7 +88,7 @@ function mobileMenu(menuClassName, menuIconClassName, mobileResolution, isMenuFi
 	}
 
 	function fixedMenu() {
-		if (scrollPos > 50) {
+		if (scrollPos > offsetToSticky) {
 			$menu.addClass("fixed-menu");
 		} else {
 			$menu.removeClass("fixed-menu");

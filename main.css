@@ -30,27 +30,30 @@ header {
 }
 
 .menu ul li a {
-	color: mediumaquamarine;
+	color: #66cdaa;
 }
 
 .menu ul li a:hover {
-	color: aqua;
+	color: #00CD89;
+	text-decoration: none;
 }
 
-.menu-icon {
+.menu-icon,
+.menu-icon-close {
 	display: none;
-	width: 64px;
-	height: 64px;
+	width: 60px;
+	height: 60px;
 }
 
 .content {
 	width: 80%;
 	max-width: 900px;
 	margin: 0 auto;
+	margin-top: 20px;
 }
 
 .menu ul li a.active {
-	color: aqua;
+	color: #A9A9A9;
 }
 
 .menu.fixed-menu {
@@ -65,6 +68,10 @@ header {
 	top: 0;
 	bottom: 0;
 	z-index: 100;
+}
+
+section {
+	margin-bottom: 75px;
 }
 
 section p {
@@ -113,10 +120,12 @@ section p:first-child {
 		font-size: 36px;
 		text-decoration: none;
 	}
-	.menu-icon {
+	.menu-icon,
+	.menu-icon-close {
 		display: block;
 	}
 	.content {
 		margin-top: 120px;
+		text-align: center;
 	}
 }

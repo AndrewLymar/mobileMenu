@@ -1,29 +1,42 @@
-function mobileMenu(menuClassName, menuIconClassName, closeIconClassName, mobileResolution, isMenuSticky, offsetToSticky) {
+function mobileMenu(menuClassName, menuIconClassName, closeIconClassName, mobileResolution, isMenuFixed, isMenuSticky, offsetToSticky) {
 	var $menu = $(menuClassName);
 	var $menuList = $menu.find("ul");
 	var $menuLinks = $menu.find("a");
 	var $menuIcon = $(menuIconClassName);
 	var $closeIcon = $(closeIconClassName);
+	var currentMenuHeight = $menu.outerHeight();
+	var menuHeightFixed;
 	var documentWidth = $(document).width();
 	var menuIsOpened = false;
-	var offset;
+	var offset = 0;
 	var scrollPos = 0;
 
-	if (documentWidth > mobileResolution) {
-		offset = 0;
-	} else {
-		offset = $menu.outerHeight();
+	if (isMenuSticky && documentWidth > mobileResolution) {
+		$menu.addClass("fixed-menu");
+		currentMenuHeight = $menu.outerHeight() * 2;
+		menuHeightFixed = currentMenuHeight;
+		offset = currentMenuHeight;
+		setTimeout(function () {
+			$menu.removeClass("fixed-menu");
+		}, 1)
+	} else if (isMenuFixed) {
+		currentMenuHeight = $menu.outerHeight();
+		offset = currentMenuHeight;
 	}
 
 	$(document).on("scroll", onScroll);
-	$("a[href^='#']").on("click", scrollTo);
+	$menuLinks.on("click", scrollTo);
+	$menuLinks.on("click", function () {
+		if (documentWidth <= mobileResolution) {
+			hideMenu();
+		}
+		scrollTo();
+	});
 	$(window).on("resize", function () {
 		documentWidth = $(document).width();
 		if (!menuIsOpened && $(document).width() > mobileResolution) {
-			offset = 0;
 			showMenu();
 		} else if (menuIsOpened && $(document).width() < mobileResolution) {
-			offset = $menu.outerHeight();
 			hideMenu();
 		}
 	});
@@ -43,13 +56,6 @@ function mobileMenu(menuClassName, menuIconClassName, closeIconClassName, mobile
 			}
 		});
 	}
-
-
-	$menuLinks.on("click", function () {
-		if (documentWidth <= mobileResolution) {
-			hideMenu();
-		}
-	});
 
 	function onScroll(event) {
 		scrollPos = $(document).scrollTop();
@@ -71,11 +77,6 @@ function mobileMenu(menuClassName, menuIconClassName, closeIconClassName, mobile
 	function scrollTo(event) {
 		var target = this.hash;
 		var $target = $(target);
-		if (scrollPos > offsetToSticky || documentWidth < mobileResolution) {
-			offset = $menu.outerHeight();
-		} else {
-			offset = $menu.outerHeight() * 2;
-		}
 		event.preventDefault();
 		$menuLinks.each(function () {
 			$(this).removeClass("active");
@@ -90,9 +91,12 @@ function mobileMenu(menuClassName, menuIconClassName, closeIconClassName, mobile
 	function fixedMenu() {
 		if (scrollPos > offsetToSticky) {
 			$menu.addClass("fixed-menu");
+			currentMenuHeight = $menu.outerHeight();
 		} else {
 			$menu.removeClass("fixed-menu");
+			currentMenuHeight = menuHeightFixed;
 		}
+		offset = currentMenuHeight;
 	}
 
 	function showMenu() {

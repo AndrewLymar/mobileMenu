@@ -1,1 +1,8 @@
-mobileMenu("nav", ".menu-icon", ".menu", 900, true, false, 50);
+$('nav').mobileMenu({
+	menuIconClassName: ".menu-icon",
+	mobileResolution: 900,
+	isMenuFixed: true,
+	isMenuSticky: false,
+	offsetToSticky: 50,
+	closeIconClassName: ""
+});

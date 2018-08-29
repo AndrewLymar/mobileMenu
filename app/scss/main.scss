@@ -27,7 +27,8 @@ header {
 			.logo {
 				font-size: 48px;
 			}
-			.menu-icon {
+			.menu-icon,
+			.close-menu-icon {
 				display: none;
 				width: 64px;
 				height: 64px;
@@ -51,9 +52,9 @@ header {
 				}
 			}
 		}
-		&.fixed-menu {
-			//position: fixed;
-			//height: 100px;
+		&.sticky-menu {
+			position: fixed;
+			height: 100px;
 		}
 	}
 	.banner {
@@ -89,7 +90,8 @@ section {
 		nav {
 			.container {
 				position: relative;
-				.menu-icon {
+				.menu-icon,
+				.close-menu-icon {
 					display: flex;
 				}
 				ul {

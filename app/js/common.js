@@ -1,8 +1,7 @@
 $('nav').mobileMenu({
 	menuIconClassName: ".menu-icon",
 	mobileResolution: 900,
-	isMenuFixed: true,
-	isMenuSticky: false,
+	menuType: "fixed",
 	offsetToSticky: 50,
-	closeIconClassName: ""
+	closeIconClassName: ".close-menu-icon"
 });

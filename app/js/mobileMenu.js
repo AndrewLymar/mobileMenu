@@ -3,10 +3,9 @@
 		var options = $.extend({}, {
 			menuIconClassName: ".menu-icon",
 			mobileResolution: 900,
-			isMenuFixed: true,
-			isMenuSticky: false,
+			menuType: "fixed",
 			offsetToSticky: 50,
-			closeIconClassName: ""
+			closeIconClassName: ".close-menu-icon"
 		}, options);
 
 		var $menu = $(this);
@@ -21,38 +20,24 @@
 		var offset = 0;
 		var scrollPos = 0;
 
-		if (options.isMenuSticky && documentWidth >= options.mobileResolution) {
-			$menu.addClass("fixed-menu");
+		if (options.menuType == "sticky" && documentWidth >= options.mobileResolution) {
+			$menu.addClass("sticky-menu");
 			currentMenuHeight = $menu.outerHeight() * 2;
 			console.log(currentMenuHeight);
 			menuHeightFixed = currentMenuHeight;
 			offset = currentMenuHeight;
 			setTimeout(function () {
-				$menu.removeClass("fixed-menu");
+				$menu.removeClass("sticky-menu");
 			}, 1)
-		} else if (options.isMenuFixed) {
+		} else if (options.menuType == "fixed") {
 			currentMenuHeight = $menu.outerHeight();
 			offset = currentMenuHeight;
 		}
 
+		$(window).on("resize", onResizeChangeState);
+		$menuIcon.on("click", onClickChangeState);
 		$(document).on("scroll", onScroll);
 		$menuLinks.on("click", scrollTo);
-		$(window).on("resize", function () {
-			documentWidth = $(document).width();
-			if (!menuIsOpened && $(document).width() > options.mobileResolution) {
-				showMenu();
-			} else if (menuIsOpened && $(document).width() <= options.mobileResolution) {
-				hideMenu();
-			}
-		});
-
-		$menuIcon.on("click", function () {
-			if (!menuIsOpened) {
-				showMenu();
-			} else {
-				hideMenu();
-			}
-		});
 
 		if ($closeIcon) {
 			$closeIcon.on("click", function () {
@@ -62,9 +47,26 @@
 			});
 		}
 
+		function onClickChangeState(event) {
+			if (!menuIsOpened) {
+				showMenu();
+			} else {
+				hideMenu();
+			}
+		}
+
+		function onResizeChangeState(event) {
+			documentWidth = $(document).width();
+			if (!menuIsOpened && $(document).width() > options.mobileResolution) {
+				showMenu();
+			} else if (menuIsOpened && $(document).width() <= options.mobileResolution) {
+				hideMenu();
+			}
+		}
+
 		function onScroll(event) {
 			scrollPos = $(document).scrollTop();
-			if (options.isMenuSticky && documentWidth >= options.mobileResolution) {
+			if (options.menuType == "sticky" && documentWidth >= options.mobileResolution) {
 				fixedMenu();
 			}
 			$menuLinks.each(function () {
@@ -98,10 +100,10 @@
 
 		function fixedMenu() {
 			if (scrollPos > options.offsetToSticky) {
-				$menu.addClass("fixed-menu");
+				$menu.addClass("sticky-menu");
 				currentMenuHeight = $menu.outerHeight();
 			} else {
-				$menu.removeClass("fixed-menu");
+				$menu.removeClass("sticky-menu");
 				currentMenuHeight = menuHeightFixed;
 			}
 			offset = currentMenuHeight;

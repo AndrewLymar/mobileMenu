@@ -2,7 +2,7 @@
 	$.fn.mobileMenu = function (options) {
 		var options = $.extend({}, {
 			menuIconClassName: ".menu-icon",
-			mobileResolution: 900,
+			mobileResolution: 768,
 			menuType: "fixed",
 			offsetToSticky: 50,
 			closeIconClassName: ".close-menu-icon"
@@ -23,7 +23,6 @@
 		if (options.menuType == "sticky" && documentWidth >= options.mobileResolution) {
 			$menu.addClass("sticky-menu");
 			currentMenuHeight = $menu.outerHeight() * 2;
-			console.log(currentMenuHeight);
 			menuHeightFixed = currentMenuHeight;
 			offset = currentMenuHeight;
 			setTimeout(function () {
@@ -57,9 +56,9 @@
 
 		function onResizeChangeState(event) {
 			documentWidth = $(document).width();
-			if (!menuIsOpened && $(document).width() > options.mobileResolution) {
+			if (!menuIsOpened && documentWidth > options.mobileResolution) {
 				showMenu();
-			} else if (menuIsOpened && $(document).width() <= options.mobileResolution) {
+			} else if (menuIsOpened && documentWidth <= options.mobileResolution) {
 				hideMenu();
 			}
 		}

@@ -20,17 +20,24 @@
 		var offset = 0;
 		var scrollPos = 0;
 
-		if (options.menuType == "sticky" && documentWidth >= options.mobileResolution) {
-			$menu.addClass("sticky-menu");
-			currentMenuHeight = $menu.outerHeight() * 2;
-			menuHeightFixed = currentMenuHeight;
-			offset = currentMenuHeight;
-			setTimeout(function () {
-				$menu.removeClass("sticky-menu");
-			}, 1)
-		} else if (options.menuType == "fixed") {
-			currentMenuHeight = $menu.outerHeight();
-			offset = currentMenuHeight;
+		if (documentWidth >= options.mobileResolution) {
+			if (options.menuType == "sticky") {
+				$menu.addClass("sticky-menu");
+				currentMenuHeight = $menu.outerHeight() * 2;
+				menuHeightFixed = currentMenuHeight;
+				offset = currentMenuHeight;
+				setTimeout(function () {
+					$menu.removeClass("sticky-menu");
+				}, 1)
+			}
+			if (options.menuType == "fixed") {
+				currentMenuHeight = $menu.outerHeight();
+				offset = currentMenuHeight;
+			}
+			if (options.menuType == "custom") {
+				currentMenuHeight = $menu.outerHeight();
+				offset = currentMenuHeight;
+			}
 		}
 
 		$(window).on("resize", onResizeChangeState);
@@ -65,8 +72,13 @@
 
 		function onScroll(event) {
 			scrollPos = $(document).scrollTop();
-			if (options.menuType == "sticky" && documentWidth >= options.mobileResolution) {
-				fixedMenu();
+			if (documentWidth >= options.mobileResolution) {
+				if (options.menuType == "sticky") {
+					fixedMenu();
+				}
+				if (options.menuType == "custom") {
+					customMenu();
+				}
 			}
 			$menuLinks.each(function () {
 				var currLink = $(this);
@@ -84,7 +96,7 @@
 			var target = this.hash;
 			var $target = $(target);
 			event.preventDefault();
-			if (documentWidth <= options.mobileResolution) {
+			if ($(document).width() <= options.mobileResolution) {
 				hideMenu();
 			}
 			$menuLinks.each(function () {
@@ -108,6 +120,14 @@
 			offset = currentMenuHeight;
 		}
 
+		function customMenu() {
+			if (scrollPos > 50) {
+				$menu.addClass("custom-menu");
+			} else {
+				$menu.removeClass("custom-menu");
+			}
+		}
+
 		function showMenu() {
 			$menuList.css("display", "flex");
 			menuIsOpened = true;
@@ -120,4 +140,5 @@
 
 		return this;
 	};
+
 })(jQuery);
